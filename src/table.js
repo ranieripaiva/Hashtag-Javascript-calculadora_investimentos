@@ -12,6 +12,7 @@ export const createTable = (columnsArray, dataArray, tableId) => {
       'Para a correta execução, precisamos de um array com as colunas, outro com as informações das linhas e também o id do elemento tabela selecionado'
     );
   }
+
   const tableElement = document.getElementById(tableId);
   if (!tableElement || tableElement.nodeName !== 'TABLE') {
     throw new Error('Id informado não corresponde a nenhum elemento table');
@@ -27,14 +28,15 @@ function createTableHeader(tableReference, columnsArray) {
           <thead></thead>
           <tbody></tbody>
         </table> */
-  function createTheadElement(tableReference) {
-    const thead = document.createElement('thead'); //<thead></thead>
+  function createTheadElement(tableReference) {    
+    
+    const thead = document.createElement('thead'); //<thead></thead>    
     tableReference.appendChild(thead); //<table><thead></thead></table>
     return thead;
   }
   const tableHeaderReference =
     tableReference.querySelector('thead') ?? createTheadElement(tableReference);
-  //<table><thead></thead></table>
+  //<table><thead></thead></table>  
   const headerRow = document.createElement('tr'); //<tr></tr>
   ['bg-blue-900', 'text-slate-200', 'sticky', 'top-0'].forEach((cssClass) =>
     headerRow.classList.add(cssClass)
