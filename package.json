@@ -18,5 +18,8 @@
   "main": "main.js",
   "author": "",
   "license": "ISC",
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "chart.js": "^4.4.3"
+  }
 }
