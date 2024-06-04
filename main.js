@@ -7,6 +7,7 @@ const finalMoneyChart = document.getElementById('final-money-distribution');
 const progressionChart = document.getElementById('progression');
 const form = document.getElementById('investment-form');
 const clearFormButton = document.getElementById('clear-form');
+const clearTableThead = document.querySelector('#results-table thead')
 // const calculateButton = document.getElementById('calculate-results');
 let doughnutChartReference = {};
 let progressionChartReference = {};
@@ -144,15 +145,28 @@ function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
+function removeLinesThead(){
+
+  var thead = clearTableThead;
+
+    // Remove todas as linhas dentro do <thead>
+    while (thead.firstChild) {
+        thead.removeChild(thead.firstChild);
+    }
+}
+
 function resetCharts() {
   if (
     !isObjectEmpty(doughnutChartReference) &&
     !isObjectEmpty(progressionChartReference)
   ) {
     doughnutChartReference.destroy();
-    progressionChartReference.destroy();   
+    progressionChartReference.destroy(); 
+    removeLinesThead();  
   }
 }
+
+
 
 function clearForm() {
   form['starting-amount'].value = '';
@@ -162,6 +176,10 @@ function clearForm() {
   form['tax-rate'].value = '';
 
   resetCharts();
+  const existTableHeader = document.querySelector('#results-table thead').value
+  if (existTableHeader) {
+    alert(existTableHeader)    
+  }
 
   const errorInputContainers = document.querySelectorAll('.error');
 
