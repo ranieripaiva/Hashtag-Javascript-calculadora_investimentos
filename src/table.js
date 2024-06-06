@@ -2,13 +2,27 @@ const isNonEmptyArray = (arrayElement) => {
   return Array.isArray(arrayElement) && arrayElement.length > 0;
 };
 
-
-
 export const createTable = (columnsArray, dataArray, tableId) => {
-  
   if (
     !isNonEmptyArray(columnsArray) &&
     !isNonEmptyArray(dataArray) &&
+    !tableId
+  ) {
+    throw new Error(
+      'Para a correta execução, precisamos de um array com as colunas, outro com as informações das linhas e também o id do elemento tabela selecionado'
+    );
+  }
+  const tableElement = document.getElementById(tableId);
+  if (!tableElement || tableElement.nodeName !== 'TABLE') {
+    throw new Error('Id informado não corresponde a nenhum elemento table');
+  }
+
+  createTableHeader(tableElement, columnsArray);
+  createTableBody(tableElement, dataArray, columnsArray);
+};
+
+export const resetTables = (tableId) => {
+  if (    
     !tableId
   ) {
     throw new Error(
@@ -21,9 +35,9 @@ export const createTable = (columnsArray, dataArray, tableId) => {
     throw new Error('Id informado não corresponde a nenhum elemento table');
   }
 
-  createTableHeader(tableElement, columnsArray);
-  createTableBody(tableElement, dataArray, columnsArray);
-};
+  deleteTableHeader(tableElement);
+  deleteTableBody(tableElement);
+}
 
 function createTableHeader(tableReference, columnsArray) {
   /*    <table></table> || 
@@ -31,24 +45,28 @@ function createTableHeader(tableReference, columnsArray) {
           <thead></thead>
           <tbody></tbody>
         </table> */
-
-  function createTheadElement(tableReference) {    
-    
-    const thead = document.createElement('thead'); //<thead></thead>    
+  function createTheadElement(tableReference) {
+    const thead = document.createElement('thead'); //<thead></thead>
     tableReference.appendChild(thead); //<table><thead></thead></table>
     return thead;
-
   }
-  const tableHeaderReference =
-    tableReference.querySelector('thead') ?? createTheadElement(tableReference);
-  //<table><thead></thead></table>  
+  /***
+   * Erro da duplicação do cabeçalho da tabela
+   *  
+   * 
+   * 
+   */
+  const tableHeaderReference = tableReference.querySelector('thead') ?? createTheadElement(tableReference);
+  tableReference.querySelector('thead').Array = [] 
+  //<table><thead></thead></table>
   const headerRow = document.createElement('tr'); //<tr></tr>
   ['bg-blue-900', 'text-slate-200', 'sticky', 'top-0'].forEach((cssClass) =>
     headerRow.classList.add(cssClass)
   );
-
+  console.log(headerRow)
   for (const tableColumnObject of columnsArray) {
     const headerElement = /*html*/ `<th class='text-center' >${tableColumnObject.columnLabel}</th>`;
+    console.log(tableColumnObject.columnLabel)
     headerRow.innerHTML += headerElement;
   }
   //<tr><th class='text-center'>NomeDaColuna</th><th class='text-center'>NomeDaColuna</th></tr>
@@ -56,7 +74,6 @@ function createTableHeader(tableReference, columnsArray) {
 }
 
 function createTableBody(tableReference, tableItems, columnsArray) {
-  
   function createTbodyElement(tableReference) {
     const tbody = document.createElement('tbody');
     tableReference.appendChild(tbody);
@@ -78,4 +95,13 @@ function createTableBody(tableReference, tableItems, columnsArray) {
     }
     tableBodyReference.appendChild(tableRow);
   }
+}
+
+function deleteTableBody(tableReference) {
+  tableReference.innerHTML = '';
+  //tbody.innerHTML = '';
+}
+
+function deleteTableHeader(tableReference) {
+  tableReference.innerHTML = '';
 }
